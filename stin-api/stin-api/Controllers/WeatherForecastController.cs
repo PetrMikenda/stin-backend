@@ -42,26 +42,8 @@ namespace stin_api.Controllers
         [HttpGet("Weather/{locationName}")]
         public async Task<ActionResult<double>> Get(string locationName)
         {
-
-            //Location? location;
             LocationsWeather? weather;
-            //string body = "";
-            //using (HttpClient c = new HttpClient()) 
-            //{
 
-            //    //string url = $"http://api.openweathermap.org/geo/1.0/direct?q={locationName}&limit=1&appid=ab1ac6a8d5738d1dd4f46e7cae913c0a";
-            //    string url = "http://api.openweathermap.org/geo/1.0/direct?q=London&limit=1&appid=ab1ac6a8d5738d1dd4f46e7cae913c0a";
-            //    HttpResponseMessage response = await c.GetAsync(url);
-
-
-
-            //    body = await response.Content.ReadAsStringAsync();
-
-            //    Debug.WriteLine(body);
-            //    location = JsonSerializer.Deserialize<Location>(body);
-
-
-            //}
             List<Location>? location;
             
             using (HttpClient client = new HttpClient())
@@ -81,8 +63,7 @@ namespace stin_api.Controllers
                     throw new HttpRequestException();
                 }
             }
-            //return location.FirstOrDefault().lon;
-            //return $"https://api.openweathermap.org/data/2.5/weather?lat={location.FirstOrDefault().lat}&lon={location.FirstOrDefault().lon}.99&appid=ab1ac6a8d5738d1dd4f46e7cae913c0a&units=metric";
+          
             using (HttpClient client = new HttpClient())
             {
                 try
@@ -100,24 +81,6 @@ namespace stin_api.Controllers
                     throw new HttpRequestException();
                 }
             }
-
-
-            //location = JsonConvert.DeserializeObject<Location>(body);
-
-            //using (HttpClient c = new HttpClient())
-            //{
-            //    string url = $"https://api.openweathermap.org/data/2.5/weather?lat={location.lat}&lon={location.lon}.99&appid=ab1ac6a8d5738d1dd4f46e7cae913c0a&units=metric";
-            //    HttpResponseMessage response = await c.GetAsync(url);
-            //    body = await response.Content.ReadAsStringAsync();
-            //    weather = JsonSerializer.Deserialize<LocationsWeather>(body);
-            //}
-
-            ////weather = JsonConvert.DeserializeObject<LocationsWeather>(body);
-
-            //if (weather == null)
-            //{
-            //    return NotFound();
-            //}
 
             return weather.main.temp;
         }
