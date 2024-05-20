@@ -98,6 +98,65 @@ namespace stin_api.Controllers
 
             return NoContent();
         }
+        //
+        [HttpPut("{id}/pay")]
+        public async Task<IActionResult> UserPay(int id)
+        {
+
+            User user = _context.Users.Find(id);
+            if (user == null)
+            {
+                return BadRequest();
+            }
+            user.premium = "ano";
+            _context.Entry(user).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        [HttpPost("/register")]
+        public async Task<ActionResult<User>> UserRegister(string username, string email, string password)
+        {
+            User user = new User() { username=username, email=email, password=password, premium="ne" };
+            if (_context.Users.Where(o => o.email == email).Any())
+            {
+                return BadRequest("User with this email exists");
+            }
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetUser", new { id = user.id }, user);
+        }
+
+        [HttpGet("/login")]
+        public async Task<ActionResult<User>> UserLogin(string username, string password)
+        {
+            var user = _context.Users.Where(o => o.username == username && o.password == password).FirstOrDefault();
+            //var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return user;
+        }
 
         private bool UserExists(int id)
         {
