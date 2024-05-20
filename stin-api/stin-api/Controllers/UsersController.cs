@@ -131,10 +131,10 @@ namespace stin_api.Controllers
         }
 
         [HttpPost("/register")]
-        public async Task<ActionResult<User>> UserRegister(string username, string email, string password)
+        public async Task<ActionResult<User>> UserRegister(UserRegisterModel inputUser)
         {
-            User user = new User() { username=username, email=email, password=password, premium="ne" };
-            if (_context.Users.Where(o => o.email == email).Any())
+            User user = new User() { username=inputUser.username, email=inputUser.email, password=inputUser.password, premium="ne" };
+            if (_context.Users.Where(o => o.email == inputUser.email).Any())
             {
                 return BadRequest("User with this email exists");
             }
