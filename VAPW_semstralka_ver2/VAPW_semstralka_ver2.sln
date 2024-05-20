@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VAPW_semstralka_ver2", "VAPW_semstralka_ver2\VAPW_semstralka_ver2.csproj", "{F87302F5-15C9-46FD-83A7-1F5FCBA30147}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mikenda_mycka", "Mikenda_mycka\Mikenda_mycka.csproj", "{AC55349B-E932-416E-BCC8-86209A0FF14E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F87302F5-15C9-46FD-83A7-1F5FCBA30147}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F87302F5-15C9-46FD-83A7-1F5FCBA30147}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F87302F5-15C9-46FD-83A7-1F5FCBA30147}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F87302F5-15C9-46FD-83A7-1F5FCBA30147}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC55349B-E932-416E-BCC8-86209A0FF14E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC55349B-E932-416E-BCC8-86209A0FF14E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC55349B-E932-416E-BCC8-86209A0FF14E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC55349B-E932-416E-BCC8-86209A0FF14E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2687F811-4F04-47D7-AB29-E52676297757}
+	EndGlobalSection
+EndGlobal
