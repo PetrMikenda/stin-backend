@@ -130,7 +130,7 @@ namespace stin_api.Controllers
             return NoContent();
         }
 
-        [HttpPost("/register")]
+        [HttpPost("Register")]
         public async Task<ActionResult<User>> UserRegister(UserRegisterModel inputUser)
         {
             User user = new User() { username=inputUser.username, email=inputUser.email, password=inputUser.password, premium="ne" };
@@ -144,10 +144,11 @@ namespace stin_api.Controllers
             return CreatedAtAction("GetUser", new { id = user.id }, user);
         }
 
-        [HttpGet("Login")]
-        public async Task<ActionResult<User>> UserLogin([FromQuery]UserLoginModel inputUser)
+        [HttpPost("Login")]
+        public async Task<ActionResult<User>> UserLogin(UserLoginModel inputUser)
         {
-            var user = await _context.Users.Where(o => o.email == inputUser.email && o.password == inputUser.password).FirstOrDefaultAsync();
+            //var user = await _context.Users.Where(o => o.email == inputUser.email && o.password == inputUser.password).FirstOrDefaultAsync();
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.email == inputUser.email && u.password == inputUser.password);
             //var user = await _context.Users.FindAsync(id);
 
             if (user == null)
