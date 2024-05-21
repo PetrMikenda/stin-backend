@@ -145,9 +145,9 @@ namespace stin_api.Controllers
         }
 
         [HttpGet("/login")]
-        public async Task<ActionResult<User>> UserLogin([FromQuery] UserLoginModel inputUser)
+        public async Task<ActionResult<User>> UserLogin([FromQuery]UserLoginModel inputUser)
         {
-            var user = _context.Users.Where(o => o.email == inputUser.email && o.password == inputUser.password).FirstOrDefault();
+            var user = await _context.Users.Where(o => o.email == inputUser.email && o.password == inputUser.password).FirstOrDefaultAsync();
             //var user = await _context.Users.FindAsync(id);
 
             if (user == null)
