@@ -144,7 +144,7 @@ namespace stin_api.Controllers
             return CreatedAtAction("GetUser", new { id = user.id }, user);
         }
 
-        [HttpGet("/login")]
+        [HttpGet("Login")]
         public async Task<ActionResult<User>> UserLogin([FromQuery]UserLoginModel inputUser)
         {
             var user = await _context.Users.Where(o => o.email == inputUser.email && o.password == inputUser.password).FirstOrDefaultAsync();
