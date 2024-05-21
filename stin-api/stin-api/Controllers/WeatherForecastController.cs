@@ -170,7 +170,7 @@ namespace stin_api.Controllers
             {
                 return "https://openweathermap.org/img/wn/03d@2x.png";
             }
-            if (weatherCode == 803 && weatherCode == 804)
+            if (weatherCode == 803 || weatherCode == 804)
             {
                 return "https://openweathermap.org/img/wn/04d@2x.png";
             }
