@@ -246,5 +246,62 @@ namespace stin_api.Controllers
             return historyTemps;
         }
 
+        [HttpGet("Weather/GetForecast/{locationName}")]
+        public async Task<List<double>> GetWeatherForecast(string locationName)
+        {
+            List<Location>? location;
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    string url = $"http://api.openweathermap.org/geo/1.0/direct?q={locationName}&limit=1&appid=ab1ac6a8d5738d1dd4f46e7cae913c0a";
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    response.EnsureSuccessStatusCode();
+
+                    string body = await response.Content.ReadAsStringAsync();
+
+                    location = JsonSerializer.Deserialize<List<Location>>(body);
+                }
+                catch (HttpRequestException e)
+                {
+                    throw new HttpRequestException();
+                }
+            }
+
+            DateTime now = DateTime.Now.Date.AddHours(12);
+            List<Forecast> weatherForecast= new List<Forecast>();
+            Forecast? weatherF = new Forecast();
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    string url = $"https://api.openweathermap.org/data/2.5/forecast/daily?lat={location[0].lat.ToString().Replace(',', '.')}&lon={location[0].lon.ToString().Replace(',', '.')}&cnt=5&appid=ab1ac6a8d5738d1dd4f46e7cae913c0a&units=metric";
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    response.EnsureSuccessStatusCode();
+
+                    string body = await response.Content.ReadAsStringAsync();
+
+                    weatherF = JsonSerializer.Deserialize<Forecast>(body);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+
+            List<double> forecast = new List<double>();
+
+            foreach(ForecastList f in weatherF.list)
+            {
+                forecast.Add(f.temp.day);
+            }
+
+            
+
+            return forecast;
+        }
+
     }
 }
