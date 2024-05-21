@@ -178,6 +178,130 @@ namespace stin_api.Controllers
 
         }
 
+        [HttpGet("Weather/GetHistory/{locationName}")]
+        public async Task<List<double>> GetWeatherHistory(string locationName)
+        {
+            List<Location>? location;
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    string url = $"http://api.openweathermap.org/geo/1.0/direct?q={locationName}&limit=1&appid=ab1ac6a8d5738d1dd4f46e7cae913c0a";
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    response.EnsureSuccessStatusCode();
+
+                    string body = await response.Content.ReadAsStringAsync();
+
+                    location = JsonSerializer.Deserialize<List<Location>>(body);
+                }
+                catch (HttpRequestException e)
+                {
+                    throw new HttpRequestException();
+                }
+            }
+
+            DateTime now = DateTime.Now.Date.AddHours(12);
+            List<WeatherHistory> weatherHistory = new List<WeatherHistory>();
+            List<string> urls = new List<string>();
+            for (int i = 1; i < 6; i++)
+            {
+                // Datum a èas i dní zpìt
+                DateTime targetDate = now.AddDays(-i);
+
+                // Pøevod na unixový èas
+                long unixTime = ((DateTimeOffset)targetDate).ToUnixTimeSeconds();
+                // Výpis výsledku
+                using (HttpClient client = new HttpClient())
+                {
+                    try
+                    {
+                        //string url = $"http://api.openweathermap.org/geo/1.0/direct?q={locationName}&limit=1&appid=ab1ac6a8d5738d1dd4f46e7cae913c0a";
+                        string url = $"https://history.openweathermap.org/data/2.5/history/city?lat={location[0].lat.ToString().Replace(',', '.')}&lon={location[0].lon.ToString().Replace(',', '.')}&type=day&start={unixTime}&cnt=1&appid=ab1ac6a8d5738d1dd4f46e7cae913c0a&units=metric";
+                        HttpResponseMessage response = await client.GetAsync(url);
+                        response.EnsureSuccessStatusCode();
+
+                        string body = await response.Content.ReadAsStringAsync();
+                        
+                        WeatherHistory weatherH = JsonSerializer.Deserialize<WeatherHistory>(body);
+                        Debug.WriteLine(weatherH.list[0].main.temp);
+                        weatherHistory.Add(weatherH);
+                        //location = JsonSerializer.Deserialize<List<Location>>(body);
+                    }
+                    catch (HttpRequestException e)
+                    {
+                        //Debug.WriteLine(body);
+                        throw new HttpRequestException();
+                    }
+                }
+                //urls.Add($"https://history.openweathermap.org/data/2.5/history/city?lat={location[0].lat.ToString().Replace(',','.')}&lon={location[0].lon.ToString().Replace(',', '.')}&type=day&start={unixTime}&cnt=1&appid=ab1ac6a8d5738d1dd4f46e7cae913c0a&units=metric");
+            }
+            //return urls;
+            List<double> historyTemps = new List<double>();
+            foreach (WeatherHistory item in weatherHistory)
+            {
+                historyTemps.Add(item.list[0].main.temp);
+            }
+
+            return historyTemps;
+        }
+
+        [HttpGet("Weather/GetForecast/{locationName}")]
+        public async Task<List<double>> GetWeatherForecast(string locationName)
+        {
+            List<Location>? location;
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    string url = $"http://api.openweathermap.org/geo/1.0/direct?q={locationName}&limit=1&appid=ab1ac6a8d5738d1dd4f46e7cae913c0a";
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    response.EnsureSuccessStatusCode();
+
+                    string body = await response.Content.ReadAsStringAsync();
+
+                    location = JsonSerializer.Deserialize<List<Location>>(body);
+                }
+                catch (HttpRequestException e)
+                {
+                    throw new HttpRequestException();
+                }
+            }
+
+            DateTime now = DateTime.Now.Date.AddHours(12);
+            List<Forecast> weatherForecast= new List<Forecast>();
+            Forecast? weatherF = new Forecast();
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    string url = $"https://api.openweathermap.org/data/2.5/forecast/daily?lat={location[0].lat.ToString().Replace(',', '.')}&lon={location[0].lon.ToString().Replace(',', '.')}&cnt=5&appid=ab1ac6a8d5738d1dd4f46e7cae913c0a&units=metric";
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    response.EnsureSuccessStatusCode();
+
+                    string body = await response.Content.ReadAsStringAsync();
+
+                    weatherF = JsonSerializer.Deserialize<Forecast>(body);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+
+            List<double> forecast = new List<double>();
+
+            foreach(ForecastList f in weatherF.list)
+            {
+                forecast.Add(f.temp.day);
+            }
+
+            
+
+            return forecast;
+        }
 
     }
 }
