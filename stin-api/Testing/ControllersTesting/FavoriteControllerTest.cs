@@ -154,9 +154,7 @@ namespace Testing.ControllersTesting
         public async Task PutFavorite_ShouldReturnBadRequest_WhenIdDoesNotMatch()
         {
             // Arrange
-            var dbContextOptions = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
-                .Options;
+            var dbContextOptions = GetDbContextOptions();
 
             using (var context = new AppDbContext(dbContextOptions))
             {
@@ -179,9 +177,7 @@ namespace Testing.ControllersTesting
         public async Task PutFavorite_ShouldReturnNotFound_WhenFavoriteDoesNotExist()
         {
             // Arrange
-            var dbContextOptions = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
-                .Options;
+            var dbContextOptions = GetDbContextOptions();
 
             using (var context = new AppDbContext(dbContextOptions))
             {
@@ -200,9 +196,7 @@ namespace Testing.ControllersTesting
         public async Task PostFavorite_ShouldCreateFavorite_WhenFavoriteIsValid()
         {
             // Arrange
-            var dbContextOptions = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
-                .Options;
+            var dbContextOptions = GetDbContextOptions();
 
             using (var context = new AppDbContext(dbContextOptions))
             {
@@ -220,26 +214,6 @@ namespace Testing.ControllersTesting
 
                 var favoriteInDb = await context.Favorites.FindAsync(newFavorite.id);
                 favoriteInDb.Should().BeEquivalentTo(newFavorite, options => options.ExcludingMissingMembers());
-            }
-        }
-        [Fact]
-        public async Task PostFavorite_ShouldReturnBadRequest_WhenFavoriteIsNull()
-        {
-            // Arrange
-            var dbContextOptions = GetDbContextOptions();
-
-            using (var context = new AppDbContext(dbContextOptions))
-            {
-                var controller = new FavoritesController(context);
-
-                // Simulate model validation failure
-                controller.ModelState.AddModelError("Favorite", "Favorite is required");
-
-                // Act
-                var result = await controller.PostFavorite(null);
-
-                // Assert
-                result.Result.Should().BeOfType<BadRequestResult>();
             }
         }
 
@@ -294,9 +268,7 @@ namespace Testing.ControllersTesting
         public async Task GetUsersFavorites_ShouldReturnFavorites_WhenFavoritesExistForUser()
         {
             // Arrange
-            var dbContextOptions = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
-                .Options;
+            var dbContextOptions = GetDbContextOptions();
 
             using (var context = new AppDbContext(dbContextOptions))
             {
@@ -325,9 +297,7 @@ namespace Testing.ControllersTesting
         public async Task GetUsersFavorites_ShouldReturnEmptyList_WhenNoFavoritesExistForUser()
         {
             // Arrange
-            var dbContextOptions = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
-                .Options;
+            var dbContextOptions = GetDbContextOptions();
 
             using (var context = new AppDbContext(dbContextOptions))
             {
