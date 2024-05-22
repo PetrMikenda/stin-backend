@@ -63,5 +63,58 @@ namespace Testing.ControllersTesting
                 );
             }
         }
+
+        [Fact]
+        public void UserModel_ShouldHaveCorrectProperties()
+        {
+            // Arrange
+            var user = new User
+            {
+                id = 1,
+                username = "TestUser",
+                email = "testuser@example.com",
+                password = "password123",
+                premium = "ano"
+            };
+
+            // Act & Assert
+            user.id.Should().Be(1);
+            user.username.Should().Be("TestUser");
+            user.email.Should().Be("testuser@example.com");
+            user.password.Should().Be("password123");
+            user.premium.Should().Be("ano");
+        }
+
+        [Fact]
+        public void UserLoginModel_ShouldHaveCorrectProperties()
+        {
+            // Arrange
+            var userLoginModel = new UserLoginModel
+            {
+                email = "testuser@example.com",
+                password = "password123"
+            };
+
+            // Act & Assert
+            userLoginModel.email.Should().Be("testuser@example.com");
+            userLoginModel.password.Should().Be("password123");
+        }
+
+        [Fact]
+        public void UserRegisterModel_ShouldHaveCorrectProperties()
+        {
+            // Arrange
+            var userRegisterModel = new UserRegisterModel
+            {
+                username = "TestUser",
+                email = "testuser@example.com",
+                password = "password123"
+            };
+
+            // Act & Assert
+            userRegisterModel.username.Should().Be("TestUser");
+            userRegisterModel.email.Should().Be("testuser@example.com");
+            userRegisterModel.password.Should().Be("password123");
+        }
     }
 }
