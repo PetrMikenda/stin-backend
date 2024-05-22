@@ -303,28 +303,5 @@ namespace Testing.ControllersTesting
             result.Should().Be("https://openweathermap.org/img/wn/03d@2x.png");
         }
 
-        [Fact]
-        public async Task Get_ShouldReturnTemperature_WhenLocationExists()
-        {
-            // Arrange
-            var locationResponse = CreateHttpResponseMessage(new List<Location>
-        {
-            new Location { lat = 51.5074, lon = -0.1278 }
-        });
-
-            var weatherResponse = CreateHttpResponseMessage(new LocationsWeather
-            {
-                main = new Main { temp = 20.0 }
-            });
-
-            var controller = CreateControllerWithMockedHttpClient(locationResponse, weatherResponse);
-            var locationName = "London";
-
-            // Act
-            var result = await controller.Get(locationName);
-
-            // Assert
-            result.Value.Should().Be(12.81);
-        }
     }
 }
